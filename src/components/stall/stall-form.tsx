@@ -59,31 +59,31 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
     }
 
     return (
-        <form onSubmit={handleSubmit} className="meta-card mb-8">
+        <form onSubmit={handleSubmit} className="meta-card p-4 sm:p-8 md:p-10 mb-6 sm:mb-8">
             <fieldset disabled={isSubmitting}>
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-6 sm:mb-8">
                     <div>
-                        <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
                             {initialData?.id ? 'Edit Stall' : 'Create New Stall'}
                         </h2>
-                        <p className="text-muted-foreground text-[14px] mt-1">
+                        <p className="text-muted-foreground text-[13px] sm:text-[14px] mt-1">
                             {initialData?.id ? 'Update your stall information below' : 'Fill in the details to register a new stall'}
                         </p>
                     </div>
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground"
+                        className="p-1.5 sm:p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground shrink-0"
                     >
-                        <X size={24} />
+                        <X size={20} className="sm:w-6 sm:h-6" />
                     </button>
                 </div>
 
-                <div className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-6">
+                <div className="space-y-6 sm:space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                        <div className="space-y-4 sm:space-y-6">
                             <div>
-                                <label htmlFor="name" className="block text-[14px] font-bold text-foreground mb-2 px-1">
+                                <label htmlFor="name" className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
                                     Stall Name <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -91,32 +91,32 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                                     type="text"
                                     value={stalls.user.name}
                                     onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, name: e.target.value } }))}
-                                    className="meta-input"
+                                    className="meta-input text-[14px] sm:text-[16px]"
                                     placeholder="e.g., Food Stall #1"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-[14px] font-bold text-foreground mb-2 px-1">
+                                <label className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
                                     Service Hours
                                 </label>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground uppercase">Open</span>
+                                        <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-[12px] font-bold text-muted-foreground uppercase">Open</span>
                                         <input
                                             type="time"
                                             value={stalls.user.openAt}
                                             onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, openAt: e.target.value } }))}
-                                            className="meta-input pl-16! py-3!"
+                                            className="meta-input pl-14 sm:pl-16! py-2.5 sm:py-3! text-[14px] sm:text-[16px]"
                                         />
                                     </div>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground uppercase">Close</span>
+                                        <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[11px] sm:text-[12px] font-bold text-muted-foreground uppercase">Close</span>
                                         <input
                                             type="time"
                                             value={stalls.user.closeAt}
                                             onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, closeAt: e.target.value } }))}
-                                            className="meta-input pl-16! py-3!"
+                                            className="meta-input pl-14 sm:pl-16! py-2.5 sm:py-3! text-[14px] sm:text-[16px]"
                                         />
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="block text-[14px] font-bold text-foreground mb-2 px-1">
+                            <label className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
                                 Stall Image
                             </label>
                             <input

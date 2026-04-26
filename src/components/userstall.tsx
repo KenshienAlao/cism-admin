@@ -52,11 +52,11 @@ export default function Userstall({ stallsList, visiblePasswordId, setVisiblePas
                                 $ {stall.incomes?.income?.toLocaleString() ?? 0}
                             </span>
                         </td>
-                        <td className="px-6 py-5 whitespace-nowrap text-right">
-                            <div className="flex items-center justify-end gap-2 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td className="px-4 sm:px-6 py-4 sm:py-5 whitespace-nowrap text-right">
+                            <div className="flex items-center justify-end gap-1 sm:gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
                                     onClick={() => handleEdit(stall.id)}
-                                    className="p-2 text-foreground hover:bg-secondary rounded-xl transition-all border border-transparent hover:border-border"
+                                    className="p-1.5 sm:p-2 text-foreground hover:bg-secondary rounded-xl transition-all border border-transparent hover:border-border"
                                     title="Edit Stall"
                                 >
                                     <Edit2 size={18} />

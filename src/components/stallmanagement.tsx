@@ -47,16 +47,16 @@ export function StallManagement() {
     };
 
     return (
-        <div className="p-6 sm:p-10 max-w-7xl mx-auto">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
+        <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-10">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Stall Management</h1>
-                    <p className="text-muted-foreground text-[16px] mt-2 font-medium">Create, update, and manage your commercial stalls</p>
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">Stall Management</h1>
+                    <p className="text-muted-foreground text-[14px] sm:text-[16px] mt-1 sm:mt-2 font-medium">Create, update, and manage your commercial stalls</p>
                 </div>
                 {!showForm && (
                     <button
                         onClick={() => setShowForm(true)}
-                        className="meta-button w-auto! flex items-center gap-2 shadow-lg shadow-primary/20"
+                        className="meta-button w-full sm:w-auto! flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
                     >
                         <PlusIcon size={20} />
                         <span>Create New Stall</span>

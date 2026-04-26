@@ -46,7 +46,7 @@
 /* --- Utilities --- */
 
 @utility meta-card {
-  @apply bg-card border border-border p-8 md:p-10 shadow-sm;
+  @apply bg-card border border-border p-5 sm:p-8 md:p-10 shadow-sm;
   @apply dark:border-white/10;
 }
 
