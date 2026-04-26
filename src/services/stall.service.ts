@@ -26,9 +26,6 @@ export const StallService = {
   ): Promise<ApiResponse<StallModel>> {
     const formData = new FormData();
     Object.entries(entity).forEach(([key, value]) => {
-      if (key === "id") {
-        return;
-      }
       if (key === "image" && !(value instanceof File)) {
         return;
       }
@@ -38,8 +35,10 @@ export const StallService = {
         formData.append(key, String(value));
       }
     });
-    formData.append("id", id);
-    return apiClient.putForm<StallModel>(API_ENDPOINTS.UPDATE_STALL, formData);
+    return apiClient.putForm<StallModel>(
+      `${API_ENDPOINTS.UPDATE_STALL}${id}`,
+      formData,
+    );
   },
 
   getStalls(): Promise<ApiResponse<StallModel[]>> {

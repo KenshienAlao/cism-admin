@@ -3,7 +3,7 @@ import { StallService } from "@/services/stall.service";
 import { notifyError, notifySuccess } from "@/lib/toast";
 import { UserModel } from "@/model/stall.model";
 
-export const STALLS_QUERY_KEY = ['stalls'];
+export const STALLS_QUERY_KEY = ["stalls"];
 
 export function useStalls() {
   const queryClient = useQueryClient();
@@ -36,7 +36,7 @@ export function useStalls() {
 
   // Update stall mutation
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UserModel }) => 
+    mutationFn: ({ id, data }: { id: string; data: UserModel }) =>
       StallService.updateStall(id, data),
     onSuccess: (res) => {
       if (res.success) {
@@ -73,13 +73,13 @@ export function useStalls() {
     isError: query.isError,
     error: query.error,
     refetch: query.refetch,
-    
+
     createStall: createMutation.mutateAsync,
     isCreating: createMutation.isPending,
-    
+
     updateStall: updateMutation.mutateAsync,
     isUpdating: updateMutation.isPending,
-    
+
     deleteStall: deleteMutation.mutateAsync,
     isDeleting: deleteMutation.isPending,
   };

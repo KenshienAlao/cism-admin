@@ -11,7 +11,7 @@ export const API_ENDPOINTS = {
   CREATE_STALL: "/api/admin/create-stall",
   GET_STALLS: "/api/admin/get-stalls",
   GET_STALL: "/api/admin/get-stall",
-  UPDATE_STALL: "/api/admin/update-stall",
+  UPDATE_STALL: "/api/admin/update-stall/",
   DELETE_STALL: "/api/admin/delete-stall",
   CREATE_MEAL: "/api/admin/create-meal",
   GET_MEALS: "/api/admin/get-meals",
