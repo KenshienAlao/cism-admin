@@ -89,7 +89,7 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                                 <input
                                     id="name"
                                     type="text"
-                                    value={stalls.user.name}
+                                    value={stalls.user.name || ""}
                                     onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, name: e.target.value } }))}
                                     className="meta-input text-[14px] sm:text-[16px]"
                                     placeholder="e.g., Food Stall #1"
@@ -174,7 +174,7 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                         </label>
                         <textarea
                             id="description"
-                            value={stalls.user.description}
+                            value={stalls.user.description || " "}
                             onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, description: e.target.value } }))}
                             className="meta-input min-h-30 resize-none"
                             rows={4}

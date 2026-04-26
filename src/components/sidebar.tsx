@@ -61,10 +61,7 @@ export function Sidebar({
                             <Plus className="text-primary-foreground sm:w-6 sm:h-6 w-5 h-5" />
                         </div>
                         <div className="min-w-0">
-                            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight truncate">Stall Manager</h1>
-                            <p className="text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-0.5 truncate">
-                                Admin Suite
-                            </p>
+                            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight">CISM Admin Suite</h1>
                         </div>
                     </div>
                 </div>

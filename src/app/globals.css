@@ -47,20 +47,18 @@
 
 @utility meta-card {
   @apply bg-card border border-border p-5 sm:p-8 md:p-10 shadow-sm;
-  @apply dark:border-white/10;
 }
 
 @utility meta-input {
-  @apply w-full rounded-xl border border-border bg-input px-4 py-4 text-[16px] ring-1 ring-neutral-300 text-foreground focus:border-primary focus:ring-2 focus:ring-primary/5 focus:outline-none;
-  @apply dark:border-white/10 dark:ring-white/10 dark:focus:border-white/30;
+  @apply w-full border border-border bg-input px-4 py-4 text-[16px] text-black focus:border-primary focus:ring-2 focus:ring-gray-400 outline-none;
 }
 
 @utility meta-button {
-  @apply w-full rounded-xl bg-primary px-6 py-4 text-[16px] font-bold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50;
+  @apply w-full bg-primary px-6 py-4 text-[16px] font-bold text-primary-foreground transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50;
 }
 
 @utility meta-button-secondary {
-  @apply inline-flex items-center justify-center rounded-xl bg-secondary px-6 py-3.5 text-[15px] font-semibold text-secondary-foreground transition-all hover:bg-accent active:scale-[0.98];
+  @apply inline-flex items-center justify-center bg-secondary px-6 py-3.5 text-[15px] font-semibold text-secondary-foreground transition-all hover:bg-accent active:scale-[0.98];
 }
 
 @layer base {

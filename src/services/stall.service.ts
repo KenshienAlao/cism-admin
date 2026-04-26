@@ -13,7 +13,7 @@ export const StallService = {
       }
       if (value instanceof File) {
         formData.append(key, value);
-      } else if (value !== undefined && value !== null && value !== "") {
+      } else if (value !== undefined && value !== null) {
         formData.append(key, String(value));
       }
     });
@@ -31,7 +31,7 @@ export const StallService = {
       }
       if (value instanceof File) {
         formData.append(key, value);
-      } else if (value !== undefined && value !== null && value !== "") {
+      } else if (value !== undefined && value !== null) {
         formData.append(key, String(value));
       }
     });
