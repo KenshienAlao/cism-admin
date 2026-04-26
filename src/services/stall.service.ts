@@ -46,6 +46,6 @@ export const StallService = {
   },
 
   deleteStall(id: string): Promise<ApiResponse<void>> {
-    return apiClient.delete<void>(`${API_ENDPOINTS.DELETE_STALL}?id=${id}`);
+    return apiClient.delete<void>(`${API_ENDPOINTS.DELETE_STALL}${id}`);
   },
 };
