@@ -33,4 +33,5 @@ export const API_ENDPOINTS = {
   GET_INCOME: "/api/admin/get-income",
   UPDATE_INCOME: "/api/admin/update-income/",
   DELETE_INCOME: "/api/admin/delete-income/",
+  RESET_PASSWORD: "/api/admin/reset-password/",
 } as const;

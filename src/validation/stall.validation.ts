@@ -6,4 +6,5 @@ export const CreateStallShema = z.object({
   image: z.union([z.instanceof(File), z.string()]).optional(),
   openAt: z.string().min(1, "Opening time is required"),
   closeAt: z.string().min(1, "Closing time is required"),
+  role: z.enum(["STALL", "BUSINESS"]),
 });

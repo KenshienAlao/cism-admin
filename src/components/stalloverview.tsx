@@ -1,14 +1,16 @@
 "use client"
 import React, { useState } from 'react';
-import { Search, Eye, EyeOff, Copy, Check, Filter, Loader2, ShieldCheck, Key, User } from 'lucide-react';
+import { Search, Eye, EyeOff, Copy, Check, Filter, Loader2, ShieldCheck, Key, User, RefreshCw, AlertTriangle } from 'lucide-react';
 import { useStalls } from '@/hooks/use-stalls';
 
 export function StallOverview() {
-    const { stallsList, isLoading } = useStalls();
+    const { stallsList, isLoading, resetPassword } = useStalls();
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
     const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
     const [copiedField, setCopiedField] = useState<string | null>(null);
+    const [resettingId, setResettingId] = useState<string | null>(null);
+    const [newPasswords, setNewPasswords] = useState<Record<string, string>>({});
 
     const togglePasswordVisibility = (stallId: string) => {
         const newVisible = new Set(visiblePasswords);
@@ -26,7 +28,26 @@ export function StallOverview() {
         setTimeout(() => setCopiedField(null), 2000);
     };
 
+    const handleResetPassword = async (stallId: string) => {
+        if (!confirm("Are you sure you want to reset this stall's password? The current password will be invalidated.")) return;
+        
+        setResettingId(stallId);
+        try {
+            const result = await resetPassword(stallId);
+            if (result && result.password) {
+                setNewPasswords(prev => ({ ...prev, [stallId]: result.password }));
+                // Automatically show the new password
+                const newVisible = new Set(visiblePasswords);
+                newVisible.add(stallId);
+                setVisiblePasswords(newVisible);
+            }
+        } finally {
+            setResettingId(null);
+        }
+    };
+
     const filteredStalls = stallsList.filter(stall => {
+        if (!stall.user) return false;
         const matchesSearch = stall.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             stall.licence.toLowerCase().includes(searchTerm.toLowerCase());
         const status = stall.user.status ? 'active' : 'inactive';
@@ -132,23 +153,49 @@ export function StallOverview() {
                                             <label className="text-[12px] sm:text-[13px] font-bold text-muted-foreground uppercase tracking-wider">Security Password</label>
                                         </div>
                                         <div className="flex items-center gap-1.5 sm:gap-2">
-                                            <div className="flex-1 bg-secondary px-3 sm:px-4 py-2.5 sm:py-3 border border-border font-mono text-[13px] sm:text-[15px] text-foreground truncate">
-                                                {visiblePasswords.has(stall.id!) ? stall.password : '••••••••••••••••'}
+                                            <div className="flex-1 bg-secondary px-3 sm:px-4 py-2.5 sm:py-3 border border-border font-mono text-[13px] sm:text-[15px] text-foreground truncate relative">
+                                                {newPasswords[stall.id!] ? (
+                                                    <span className="text-primary font-bold">
+                                                        {visiblePasswords.has(stall.id!) ? newPasswords[stall.id!] : '••••••••••••••••'}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-muted-foreground/50 italic">
+                                                        •••••••••••••••• (Encrypted)
+                                                    </span>
+                                                )}
                                             </div>
+                                            {newPasswords[stall.id!] && (
+                                                <button
+                                                    onClick={() => togglePasswordVisibility(stall.id!)}
+                                                    className="p-2.5 sm:p-3 bg-secondary hover:bg-accent text-foreground transition-colors shrink-0"
+                                                    title={visiblePasswords.has(stall.id!) ? "Hide Password" : "Show Password"}
+                                                >
+                                                    {visiblePasswords.has(stall.id!) ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            )}
                                             <button
-                                                onClick={() => togglePasswordVisibility(stall.id!)}
-                                                className="p-2.5 sm:p-3 bg-secondary hover:bg-accent text-foreground transition-colors shrink-0"
-                                            >
-                                                {visiblePasswords.has(stall.id!) ? <EyeOff size={18} /> : <Eye size={18} />}
-                                            </button>
-                                            <button
-                                                onClick={() => copyToClipboard(stall.password, `pass-${stall.id}`)}
-                                                className="p-2.5 sm:p-3 bg-secondary hover:bg-accent text-foreground transition-colors shrink-0"
+                                                onClick={() => copyToClipboard(newPasswords[stall.id!] || "", `pass-${stall.id}`)}
+                                                disabled={!newPasswords[stall.id!]}
+                                                className={`p-2.5 sm:p-3 bg-secondary hover:bg-accent text-foreground transition-colors shrink-0 ${!newPasswords[stall.id!] ? 'opacity-20 cursor-not-allowed' : ''}`}
                                                 title="Copy Password"
                                             >
                                                 {copiedField === `pass-${stall.id}` ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
                                             </button>
+                                            <button
+                                                onClick={() => handleResetPassword(stall.id!)}
+                                                disabled={resettingId === stall.id}
+                                                className="p-2.5 sm:p-3 bg-primary/10 hover:bg-primary/20 text-primary transition-colors shrink-0"
+                                                title="Reset Password"
+                                            >
+                                                {resettingId === stall.id ? <Loader2 size={18} className="animate-spin" /> : <RefreshCw size={18} />}
+                                            </button>
                                         </div>
+                                        {newPasswords[stall.id!] && (
+                                            <div className="mt-2 flex items-start gap-2 text-[11px] text-primary bg-primary/5 p-2 border border-primary/20 animate-pulse">
+                                                <AlertTriangle size={14} className="shrink-0 mt-0.5" />
+                                                <p><strong>NEW PASSWORD GENERATED:</strong> Please copy this password now. It will not be shown again after you refresh the page.</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

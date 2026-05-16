@@ -14,6 +14,7 @@ export function useStalls() {
     queryFn: async () => {
       const res = await StallService.getStalls();
       if (!res.success) throw new Error(res.message);
+      console.log(res.data);
       return res.data || [];
     },
   });
@@ -82,5 +83,17 @@ export function useStalls() {
 
     deleteStall: deleteMutation.mutateAsync,
     isDeleting: deleteMutation.isPending,
+
+    resetPassword: async (id: string) => {
+      const res = await StallService.resetPassword(id);
+      if (res.success) {
+        notifySuccess("Password reset successfully");
+        queryClient.invalidateQueries({ queryKey: STALLS_QUERY_KEY });
+        return res.data;
+      } else {
+        notifyError(res.message);
+        return null;
+      }
+    }
   };
 }

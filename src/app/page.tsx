@@ -2,7 +2,6 @@
 import { Sidebar } from "@/components/sidebar";
 import { useState } from "react";
 import { VALUES } from "@/config/app.config";
-import { useRouter } from "next/navigation";
 import { Dashboard } from "@/components/dashboard";
 import { StallManagement } from "@/components/stallmanagement";
 import { StallOverview } from "@/components/stalloverview";

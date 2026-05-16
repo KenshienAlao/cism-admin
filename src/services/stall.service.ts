@@ -1,51 +1,33 @@
 import { apiClient } from "@/config/api.config";
 import { API_ENDPOINTS } from "@/config/app.config";
 import { ApiResponse } from "@/lib/api";
+import { prepareFormData } from "@/lib/utils/formdata";
 import { StallModel, UserModel } from "@/model/stall.model";
 
 export const StallService = {
-  createStall(entity: Readonly<UserModel>): Promise<ApiResponse<StallModel>> {
-    const formData = new FormData();
+  getStalls: (): Promise<ApiResponse<StallModel[]>> =>
+    apiClient.get<StallModel[]>(API_ENDPOINTS.GET_STALLS),
+  getStall: (id: string): Promise<ApiResponse<StallModel>> =>
+    apiClient.get<StallModel>(`${API_ENDPOINTS.GET_STALL}/${id}`),
 
-    Object.entries(entity).forEach(([key, value]) => {
-      if (key === "image" && !(value instanceof File)) {
-        return;
-      }
-      if (value instanceof File) {
-        formData.append(key, value);
-      } else if (value !== undefined && value !== null) {
-        formData.append(key, String(value));
-      }
-    });
+  createStall: (entity: Readonly<UserModel>): Promise<ApiResponse<StallModel>> =>
+    apiClient.postForm<StallModel>(
+      API_ENDPOINTS.CREATE_STALL,
+      prepareFormData(entity),
+    ),
 
-    return apiClient.postForm<StallModel>(API_ENDPOINTS.CREATE_STALL, formData);
-  },
-  updateStall(
+  updateStall: (
     id: string,
-    entity: Readonly<UserModel>,
-  ): Promise<ApiResponse<StallModel>> {
-    const formData = new FormData();
-    Object.entries(entity).forEach(([key, value]) => {
-      if (key === "image" && !(value instanceof File)) {
-        return;
-      }
-      if (value instanceof File) {
-        formData.append(key, value);
-      } else if (value !== undefined && value !== null) {
-        formData.append(key, String(value));
-      }
-    });
-    return apiClient.putForm<StallModel>(
+    entity: Readonly<Partial<UserModel>>,
+  ): Promise<ApiResponse<StallModel>> =>
+    apiClient.putForm<StallModel>(
       `${API_ENDPOINTS.UPDATE_STALL}${id}`,
-      formData,
-    );
-  },
+      prepareFormData(entity),
+    ),
 
-  getStalls(): Promise<ApiResponse<StallModel[]>> {
-    return apiClient.get<StallModel[]>(API_ENDPOINTS.GET_STALLS);
-  },
+  deleteStall: (id: string): Promise<ApiResponse<void>> =>
+    apiClient.delete<void>(`${API_ENDPOINTS.DELETE_STALL}${id}`),
 
-  deleteStall(id: string): Promise<ApiResponse<void>> {
-    return apiClient.delete<void>(`${API_ENDPOINTS.DELETE_STALL}${id}`);
-  },
+  resetPassword: (id: string): Promise<ApiResponse<StallModel>> =>
+    apiClient.put<StallModel>(`${API_ENDPOINTS.RESET_PASSWORD}${id}`, {}),
 };

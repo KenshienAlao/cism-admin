@@ -13,6 +13,7 @@ export interface UserModel {
   description: string;
   image: string | File;
   status?: boolean;
+  role: "STALL" | "BUSINESS";
   openAt: string;
   closeAt: string;
   createdAt?: string;
@@ -35,6 +36,7 @@ export const initStalls: StallModel = {
     name: "",
     description: "",
     image: "",
+    role: "STALL",
     openAt: "",
     closeAt: "",
   },

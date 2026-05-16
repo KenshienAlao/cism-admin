@@ -13,6 +13,7 @@ export default function Userstall({ stallsList, visiblePasswordId, setVisiblePas
     return (
         <tbody className="divide-y divide-border">
             {stallsList.map((stall, idx) => {
+                if (!stall.user) return null; // Skip stalls with no user data
                 const isPasswordVisible = visiblePasswordId === stall.id;
                 const newLocal = "text-[13px] text-muted-foreground line-clamp-1 max-w-50";
                 return (

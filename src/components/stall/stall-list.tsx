@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, Store, SearchX } from 'lucide-react';
 import { StallModel } from '@/model/stall.model';
 import Userstall from '@/components/userstall';
 import Loadingstalls from '@/components/ui/loadingstalls';
@@ -14,6 +14,8 @@ interface StallListProps {
 
 export function StallList({ stallsList, isLoading, onEdit, onDelete }: StallListProps) {
     const [visiblePasswordId, setVisiblePasswordId] = useState<string | null>(null);
+    const validStallsCount = stallsList.filter(s => s.user).length;
+    const isEmpty = validStallsCount === 0 && !isLoading;
 
     return (
         <div className="bg-card border border-border shadow-sm overflow-hidden">
@@ -57,15 +59,24 @@ export function StallList({ stallsList, isLoading, onEdit, onDelete }: StallList
                                 onDeleteStall={onDelete}
                             />
 
-                            {stallsList.length === 0 && (
+                            {isEmpty && (
                                 <tbody>
                                     <tr>
-                                        <td colSpan={6} className="py-20 text-center">
-                                            <div className="bg-secondary w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                                <PlusIcon className="text-muted-foreground" size={32} />
+                                        <td colSpan={6} className="py-24 text-center">
+                                            <div className="relative inline-block mb-6">
+                                                <div className="bg-secondary/50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto ring-8 ring-secondary/20">
+                                                    <Store className="text-muted-foreground/60" size={36} strokeWidth={1.5} />
+                                                </div>
+                                                <div className="absolute -right-2 -bottom-2 bg-background border border-border p-1.5 rounded-xl shadow-sm">
+                                                    <SearchX size={16} className="text-primary" />
+                                                </div>
                                             </div>
-                                            <p className="text-foreground font-bold">No stalls found</p>
-                                            <p className="text-muted-foreground text-sm mt-1">Get started by creating your first stall.</p>
+                                            <div className="max-w-xs mx-auto">
+                                                <h3 className="text-[18px] font-extrabold text-foreground tracking-tight">No Stalls Available</h3>
+                                                <p className="text-muted-foreground text-[14px] mt-2 leading-relaxed font-medium">
+                                                    It looks like there are no active stalls in the system yet.
+                                                </p>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

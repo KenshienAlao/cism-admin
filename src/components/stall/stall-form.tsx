@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react';
-import { Save, X, PlusIcon, Camera, ImagePlus, Loader2 } from 'lucide-react';
+import { Save, X, PlusIcon, Camera, ImagePlus, Loader2, ChevronDown } from 'lucide-react';
 import { initStalls, StallModel } from '@/model/stall.model';
 import { notifyError } from '@/lib/toast';
 import Image from 'next/image';
@@ -14,13 +14,20 @@ interface StallFormProps {
 }
 
 export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: StallFormProps) {
-    const [stalls, setStalls] = useState<StallModel>(initialData || initStalls);
+    const [stalls, setStalls] = useState<StallModel>(
+        initialData
+            ? { ...initialData, user: { ...initialData.user, role: initialData.user.role || "STALL" } }
+            : initStalls
+    );
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (initialData) {
-            setStalls(initialData);
+            setStalls({
+                ...initialData,
+                user: { ...initialData.user, role: initialData.user.role || "STALL" }
+            });
             if (initialData.user.image) {
                 const image = initialData.user.image;
                 setImagePreview(typeof image === 'string' ? image : URL.createObjectURL(image));
@@ -95,6 +102,25 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                                     placeholder="e.g., Food Stall #1"
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="role" className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
+                                    Role <span className="text-red-500">*</span>
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        id="role"
+                                        value={stalls.user.role || "STALL"}
+                                        onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, role: e.target.value as "STALL" | "BUSINESS" } }))}
+                                        className="meta-input text-[14px] sm:text-[16px] appearance-none pr-10"
+                                    >
+                                        <option value="STALL">STALL</option>
+                                        <option value="BUSINESS">BUSINESS</option>
+                                    </select>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                                        <ChevronDown size={20} />
+                                    </div>
+                                </div>
+                            </div>
 
                             <div>
                                 <label className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
@@ -124,10 +150,11 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
+                            <label htmlFor='image' className="block text-[13px] sm:text-[14px] font-bold text-foreground mb-2 px-1">
                                 Stall Image
                             </label>
                             <input
+                                id='image'
                                 ref={fileInputRef}
                                 type='file'
                                 accept='image/jpeg,image/png,image/webp'
@@ -146,14 +173,38 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                                             fill
                                             className="object-cover"
                                         />
-                                        <div className="absolute inset-0 bg-foreground/10 group-hover:bg-foreground/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                            <div className="bg-card p-3 rounded-xl shadow-xl transform scale-90 group-hover:scale-100 transition-transform flex items-center gap-2">
-                                                <Camera className="text-foreground" size={20} />
-                                                <span className="text-sm font-bold text-foreground">Change Image</span>
+                                        
+                                        {/* Floating Remove Button */}
+                                        <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setImagePreview(null);
+                                                setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, image: null as any } }));
+                                            }}
+                                            className="absolute top-4 right-4 z-10 bg-destructive text-destructive-foreground p-2 rounded-full shadow-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110 active:scale-95 flex items-center justify-center border-2 border-white/20"
+                                            title="Remove Image"
+                                        >
+                                            <X size={18} />
+                                        </button>
+
+                                        {/* Center Change Overlay */}
+                                        <div className="absolute inset-0 bg-foreground/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                                            <div 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    fileInputRef.current?.click();
+                                                }}
+                                                className="bg-card/90 backdrop-blur-md p-3 px-5 rounded-2xl shadow-2xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-2 hover:bg-card border border-white/10"
+                                            >
+                                                <Camera className="text-primary" size={20} />
+                                                <span className="text-sm font-bold text-foreground">Change Photo</span>
                                             </div>
                                         </div>
                                     </>
                                 ) : (
+
+
                                     <div className="flex flex-col items-center space-y-4">
                                         <div className="bg-card p-4 rounded-2xl shadow-sm border border-border group-hover:scale-110 transition-transform">
                                             <ImagePlus size={32} className="text-primary" />
@@ -174,13 +225,14 @@ export function StallForm({ initialData, onSubmit, onCancel, isSubmitting }: Sta
                         </label>
                         <textarea
                             id="description"
-                            value={stalls.user.description || " "}
+                            value={stalls.user.description || ""}
                             onChange={(e) => setStalls((prev: StallModel) => ({ ...prev, user: { ...prev.user, description: e.target.value } }))}
                             className="meta-input min-h-30 resize-none"
                             rows={4}
                             placeholder="What's your stall about?"
                         />
                     </div>
+
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <button
